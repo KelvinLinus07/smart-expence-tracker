@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Smart Expense Tracker</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+<div class="dashboard-container">
+
+    <!-- HEADER -->
+    <header>
+        <h1>💸 Smart Expense Tracker</h1>
+        <button id="logoutBtn" class="logout-small">Logout</button>
+    </header>
+
+    <!-- ===================== -->
+    <!-- SETUP SECTION -->
+    <!-- ===================== -->
+    <div id="setupSection" class="card">
+        <h2>Setup Your Budget</h2>
+
+        <input type="number" id="monthlyBudget" placeholder="Monthly Budget (₹)">
+        <input type="number" id="savingsGoal" placeholder="Savings Goal (₹)">
+
+        <!-- DAILY HABITS -->
+        <h3>Daily Spending Habits</h3>
+
+        <div id="habitContainer">
+            <div class="habit-row">
+                <input type="text" class="habitName" placeholder="e.g. Tea">
+                <input type="number" class="habitAmount" placeholder="Amount ₹">
+            </div>
+        </div>
+
+        <button id="addHabit">+ Add More</button>
+        <button id="saveSetup">Save Setup</button>
+    </div>
+
+    <!-- ===================== -->
+    <!-- DASHBOARD SECTION -->
+    <!-- ===================== -->
+    <div id="dashboardSection" style="display:none;">
+
+        <!-- SUMMARY -->
+        <div class="summary">
+            <div class="card">
+                <h3>Monthly Budget</h3>
+                <p id="budgetDisplay">₹0</p>
+            </div>
+
+            <div class="card">
+                <h3>Savings Goal</h3>
+                <p id="savingsDisplay">₹0</p>
+            </div>
+
+            <div class="card">
+                <h3>Daily Limit</h3>
+                <p id="dailyLimitDisplay">₹0</p>
+            </div>
+
+            <div class="card">
+                <h3>Remaining Today</h3>
+                <p id="remainingDisplay">₹0</p>
+            </div>
+        </div>
+
+        <!-- QUICK EXPENSE -->
+        <div class="card">
+            <h2>Quick Add (Daily Habits)</h2>
+
+            <!-- AUTO GENERATED BUTTONS -->
+            <div id="quickButtons"></div>
+
+            <!-- OTHER EXPENSE -->
+            <input type="number" id="expenseAmount" placeholder="Other Amount (₹)">
+            <button id="addExpense">Add Other Expense</button>
+        </div>
+
+        <!-- STATUS -->
+        <div class="card">
+            <h2>Status</h2>
+            <p id="statusMessage">No data yet</p>
+        </div>
+
+        <!-- CHART -->
+        <div class="card">
+            <h2>Spending Overview</h2>
+            <canvas id="expenseChart"></canvas>
+        </div>
+
+        <!-- HISTORY -->
+        <div class="card">
+            <h2>Transaction History</h2>
+            <ul id="historyList"></ul>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- MAIN JS -->
+<script src="dashboard.js"></script>
+
+</body>
+</html>
