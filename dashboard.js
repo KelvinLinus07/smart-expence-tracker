@@ -148,10 +148,14 @@ function updateChart(){
     });
 }
 
+// ==========================
 // LOGOUT
-logoutBtn.onclick=()=>{
+// ==========================
+const logoutBtn = document.getElementById("logoutBtn");
+
+logoutBtn.onclick = () => {
     localStorage.removeItem("loggedInUser");
-    location.href="index.html";
+    location.href = "index.html";
 };
 
 // INIT
