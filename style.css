@@ -6,61 +6,47 @@
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* BODY */
+/* MAIN */
 body {
     height: 100vh;
-    background: linear-gradient(135deg, #0f2027, #2c5364);
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
-/* MAIN CONTAINER */
 .main-container {
-    width: 90%;
-    max-width: 1100px;
-    height: 600px;
     display: flex;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    height: 100vh;
 }
 
-/* LEFT SECTION */
-.info-section {
+/* LEFT SIDE */
+.left-section {
     flex: 1;
-    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
     color: white;
-    padding: 50px;
+    padding: 60px;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-/* BIG TITLE */
-.info-section h1 {
+.left-section h1 {
     font-size: 3rem;
-    font-weight: bold;
     margin-bottom: 10px;
 }
 
-/* TAGLINE */
 .tagline {
     font-size: 1.2rem;
-    opacity: 0.9;
     margin-bottom: 30px;
+    opacity: 0.9;
 }
 
-/* FEATURES */
 .features p {
     margin: 10px 0;
     font-size: 1rem;
 }
 
-/* RIGHT SECTION */
-.form-section {
+/* RIGHT SIDE */
+.right-section {
     flex: 1;
-    background: #ffffff;
+    background: #f4f7fb;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -69,55 +55,47 @@ body {
 /* FORM BOX */
 .form-box {
     width: 320px;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
 /* HEADINGS */
 form h2 {
     text-align: center;
     margin-bottom: 20px;
-    color: #333;
 }
 
-/* INPUTS */
+/* INPUT */
 input {
     width: 100%;
     padding: 12px;
     margin: 10px 0;
-    border: 1px solid #ddd;
     border-radius: 8px;
-    outline: none;
-    transition: 0.3s;
-}
-
-input:focus {
-    border-color: #0072ff;
-    box-shadow: 0 0 5px rgba(0, 114, 255, 0.5);
+    border: 1px solid #ddd;
 }
 
 /* BUTTON */
 button {
     width: 100%;
     padding: 12px;
-    margin-top: 10px;
-    background: linear-gradient(135deg, #0072ff, #00c6ff);
-    color: white;
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
     border: none;
     border-radius: 8px;
+    color: white;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.3s;
 }
 
 button:hover {
-    transform: scale(1.05);
     opacity: 0.9;
 }
 
-/* SWITCH TEXT */
+/* SWITCH */
 .switch-text {
     margin-top: 15px;
     text-align: center;
-    font-size: 0.9rem;
 }
 
 .switch-text span {
@@ -126,27 +104,14 @@ button:hover {
     font-weight: bold;
 }
 
-.switch-text span:hover {
-    text-decoration: underline;
-}
-
 /* RESPONSIVE */
 @media (max-width: 768px) {
     .main-container {
         flex-direction: column;
-        height: auto;
     }
 
-    .info-section {
+    .left-section {
         text-align: center;
         padding: 30px;
-    }
-
-    .info-section h1 {
-        font-size: 2rem;
-    }
-
-    .form-section {
-        padding: 20px;
     }
 }

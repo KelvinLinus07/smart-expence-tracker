@@ -1,15 +1,17 @@
 // ==========================
-// AUTO LOGIN (SESSION CHECK)
+// AUTO REDIRECT FIXED
 // ==========================
 const currentUser = localStorage.getItem("loggedInUser");
 
-if (currentUser) {
+if (currentUser && !sessionStorage.getItem("justLoggedOut")) {
     window.location.href = "dashboard.html";
 }
 
+sessionStorage.removeItem("justLoggedOut");
+
 
 // ==========================
-// SELECT ELEMENTS
+// ELEMENTS
 // ==========================
 const loginForm = document.getElementById("loginForm");
 const signupForm = document.getElementById("signupForm");
@@ -19,85 +21,62 @@ const showLogin = document.getElementById("showLogin");
 
 
 // ==========================
-// TOGGLE FORMS
+// TOGGLE
 // ==========================
-showSignup.addEventListener("click", () => {
+showSignup.onclick = () => {
     loginForm.style.display = "none";
     signupForm.style.display = "block";
-});
+};
 
-showLogin.addEventListener("click", () => {
+showLogin.onclick = () => {
     signupForm.style.display = "none";
     loginForm.style.display = "block";
-});
+};
 
 
 // ==========================
-// SIGNUP LOGIC
+// SIGNUP
 // ==========================
 signupForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const username = document.getElementById("signupUsername").value.trim();
-    const password = document.getElementById("signupPassword").value.trim();
+    const username = signupUsername.value.trim();
+    const password = signupPassword.value.trim();
 
-    if (username === "" || password === "") {
-        alert("Please fill all fields!");
-        return;
-    }
+    if (!username || !password) return alert("Fill all fields");
 
-    // Check if user exists
     if (localStorage.getItem(username)) {
-        alert("User already exists! Please login.");
-        return;
+        return alert("User already exists");
     }
 
-    // Create user object
-    const userData = {
-        username: username,
-        password: password,
-        createdAt: new Date().toISOString()
-    };
+    localStorage.setItem(username, JSON.stringify({ username, password }));
 
-    // Save user
-    localStorage.setItem(username, JSON.stringify(userData));
+    alert("Account created!");
 
-    alert("Account created successfully!");
-
-    // Reset form
     signupForm.reset();
-
-    // Switch to login
     signupForm.style.display = "none";
     loginForm.style.display = "block";
 });
 
 
 // ==========================
-// LOGIN LOGIC
+// LOGIN
 // ==========================
 loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const username = document.getElementById("loginUsername").value.trim();
-    const password = document.getElementById("loginPassword").value.trim();
+    const username = loginUsername.value.trim();
+    const password = loginPassword.value.trim();
 
-    const storedUser = JSON.parse(localStorage.getItem(username));
+    const user = JSON.parse(localStorage.getItem(username));
 
-    if (!storedUser) {
-        alert("User not found!");
-        return;
-    }
+    if (!user) return alert("User not found");
 
-    if (storedUser.password === password) {
-        alert("Login successful!");
-
-        // Save session
+    if (user.password === password) {
         localStorage.setItem("loggedInUser", username);
-
-        // Redirect to dashboard
+        sessionStorage.removeItem("justLoggedOut");
         window.location.href = "dashboard.html";
     } else {
-        alert("Incorrect password!");
+        alert("Wrong password");
     }
 });

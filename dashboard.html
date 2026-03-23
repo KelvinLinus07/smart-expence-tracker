@@ -13,7 +13,9 @@
     <!-- HEADER -->
     <header>
         <h1>💸 Smart Expense Tracker</h1>
-        <button id="logoutBtn" class="logout-small">Logout</button>
+        <a href="index.html" onclick="logoutUser()" class="logout-small">
+    Logout
+</a>
     </header>
 
     <!-- SETUP -->
@@ -92,6 +94,11 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="dashboard.js"></script>
+<script>
+function logoutUser() {
+    localStorage.removeItem("loggedInUser");
+}
+</script>
 
 </body>
 </html>
