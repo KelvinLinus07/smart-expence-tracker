@@ -1,284 +1,158 @@
-// ==========================
-// AUTH CHECK
-// ==========================
-const currentUser = localStorage.getItem("loggedInUser");
-if (!currentUser) window.location.href = "index.html";
+const user = localStorage.getItem("loggedInUser");
+if (!user) location.href = "index.html";
 
-// ==========================
-// ELEMENTS
-// ==========================
-const setupSection = document.getElementById("setupSection");
-const dashboardSection = document.getElementById("dashboardSection");
+let data = JSON.parse(localStorage.getItem(user)) || {};
+if (!data.transactions) data.transactions = [];
 
-const monthlyBudgetInput = document.getElementById("monthlyBudget");
-const savingsGoalInput = document.getElementById("savingsGoal");
-const saveSetupBtn = document.getElementById("saveSetup");
-
-const budgetDisplay = document.getElementById("budgetDisplay");
-const savingsDisplay = document.getElementById("savingsDisplay");
-const dailyLimitDisplay = document.getElementById("dailyLimitDisplay");
-const remainingDisplay = document.getElementById("remainingDisplay");
-
-const expenseAmountInput = document.getElementById("expenseAmount");
-const addExpenseBtn = document.getElementById("addExpense");
-
-const statusMessage = document.getElementById("statusMessage");
-const logoutBtn = document.getElementById("logoutBtn");
-
-const historyList = document.getElementById("historyList");
-
-// ==========================
-// DATA
-// ==========================
-let userData = JSON.parse(localStorage.getItem(currentUser)) || {};
-
-if (!userData.transactions) userData.transactions = [];
-if (!userData.habits) userData.habits = [];
-
-// ==========================
-// INIT
-// ==========================
-if (userData.monthlyBudget && userData.savingsGoal) {
-    showDashboard();
-} else {
-    setupSection.style.display = "block";
-}
-
-// ==========================
-// SAVE DATA
-// ==========================
-function saveData() {
-    localStorage.setItem(currentUser, JSON.stringify(userData));
-}
-
-// ==========================
-// ADD HABIT INPUT FIELD
-// ==========================
-document.getElementById("addHabit").addEventListener("click", () => {
+// ADD FIXED
+document.getElementById("addFixed").onclick = () => {
     const div = document.createElement("div");
-    div.classList.add("habit-row");
-
+    div.className = "row";
     div.innerHTML = `
-        <input type="text" class="habitName" placeholder="Item">
-        <input type="number" class="habitAmount" placeholder="Amount ₹">
+        <input class="fixedName">
+        <input class="fixedAmount" type="number">
     `;
+    document.getElementById("fixedContainer").appendChild(div);
+};
 
+// ADD HABIT
+document.getElementById("addHabit").onclick = () => {
+    const div = document.createElement("div");
+    div.className = "row";
+    div.innerHTML = `
+        <input class="habitName">
+        <input class="habitAmount" type="number">
+    `;
     document.getElementById("habitContainer").appendChild(div);
-});
+};
 
-// ==========================
 // SAVE SETUP
-// ==========================
-saveSetupBtn.addEventListener("click", () => {
-    const monthlyBudget = parseFloat(monthlyBudgetInput.value);
-    const savingsGoal = parseFloat(savingsGoalInput.value);
+document.getElementById("saveSetup").onclick = () => {
+    data.monthly = +monthlyBudget.value;
+    data.savings = +savingsGoal.value;
 
-    if (!monthlyBudget || !savingsGoal) {
-        alert("Enter valid values!");
-        return;
-    }
+    // FIXED
+    const fixed = document.querySelectorAll(".fixedAmount");
+    data.fixedTotal = 0;
+    fixed.forEach(f => data.fixedTotal += +f.value || 0);
 
-    // Save basic data
-    userData.monthlyBudget = monthlyBudget;
-    userData.savingsGoal = savingsGoal;
-    userData.dailyLimit = (monthlyBudget - savingsGoal) / 30;
-    userData.todaySpent = 0;
-    userData.lastUpdated = new Date().toDateString();
-
-    // ==========================
-    // SAVE HABITS
-    // ==========================
-    const names = document.querySelectorAll(".habitName");
-    const amounts = document.querySelectorAll(".habitAmount");
-
-    userData.habits = [];
-
-    names.forEach((n, i) => {
-        if (n.value && amounts[i].value) {
-            userData.habits.push({
-                name: n.value,
-                amount: parseFloat(amounts[i].value)
-            });
+    // HABITS
+    data.habits = [];
+    document.querySelectorAll(".habitName").forEach((n,i)=>{
+        const amt = document.querySelectorAll(".habitAmount")[i].value;
+        if(n.value && amt){
+            data.habits.push({name:n.value, amount:+amt});
         }
     });
 
-    saveData();
-    showDashboard();
-});
+    // CALCULATION
+    data.dailyLimit = (data.monthly - (data.fixedTotal + data.savings)) / 30;
+    data.today = 0;
 
-// ==========================
-// SHOW DASHBOARD
-// ==========================
-function showDashboard() {
-    setupSection.style.display = "none";
-    dashboardSection.style.display = "block";
+    save();
+    show();
+};
 
-    createQuickButtons();
+function save(){
+    localStorage.setItem(user, JSON.stringify(data));
+}
+
+function show(){
+    setupSection.style.display="none";
+    dashboardSection.style.display="block";
+
+    createButtons();
     updateUI();
 }
 
-// ==========================
-// CREATE QUICK BUTTONS
-// ==========================
-function createQuickButtons() {
-    const container = document.getElementById("quickButtons");
-    container.innerHTML = "";
-
-    userData.habits.forEach(habit => {
-        const btn = document.createElement("div");
-        btn.className = "quick-btn";
-        btn.innerText = `${habit.name} ₹${habit.amount}`;
-
-        btn.onclick = () => {
-            addExpense(habit.amount, habit.name);
-        };
-
-        container.appendChild(btn);
+// QUICK BUTTONS
+function createButtons(){
+    quickButtons.innerHTML="";
+    data.habits.forEach(h=>{
+        const b=document.createElement("div");
+        b.className="quick-btn";
+        b.innerText=h.name+" ₹"+h.amount;
+        b.onclick=()=>addExpense(h.amount,h.name);
+        quickButtons.appendChild(b);
     });
 }
 
-// ==========================
-// RESET DAILY
-// ==========================
-function resetDailyIfNeeded() {
-    const today = new Date().toDateString();
+// ADD EXPENSE
+function addExpense(amount,cat="Other"){
+    data.today+=amount;
 
-    if (userData.lastUpdated !== today) {
-        userData.todaySpent = 0;
-        userData.lastUpdated = today;
-        saveData();
-    }
+    data.transactions.push({
+        amount,cat,date:new Date().toLocaleDateString()
+    });
+
+    save();
+    updateUI();
 }
 
-// ==========================
+// OTHER BUTTON
+addExpenseBtn.onclick=()=>{
+    addExpense(+expenseAmount.value,"Other");
+    expenseAmount.value="";
+};
+
 // UPDATE UI
-// ==========================
-function updateUI() {
-    resetDailyIfNeeded();
+function updateUI(){
+    const remaining=data.dailyLimit-data.today;
 
-    const remaining = userData.dailyLimit - userData.todaySpent;
-
-    budgetDisplay.innerText = "₹" + userData.monthlyBudget;
-    savingsDisplay.innerText = "₹" + userData.savingsGoal;
-    dailyLimitDisplay.innerText = "₹" + userData.dailyLimit.toFixed(2);
-    remainingDisplay.innerText = "₹" + remaining.toFixed(2);
+    budgetDisplay.innerText="₹"+data.monthly;
+    fixedDisplay.innerText="₹"+data.fixedTotal;
+    dailyLimitDisplay.innerText="₹"+data.dailyLimit.toFixed(2);
+    remainingDisplay.innerText="₹"+remaining.toFixed(2);
 
     updateStatus(remaining);
     updateHistory();
     updateChart();
 }
 
-// ==========================
-// ADD EXPENSE FUNCTION
-// ==========================
-function addExpense(amount, category = "Other") {
-    if (!amount || amount <= 0) {
-        alert("Enter valid amount!");
-        return;
-    }
+// STATUS
+function updateStatus(rem){
+    const p=(rem/data.dailyLimit)*100;
+    statusMessage.className="";
 
-    userData.todaySpent += amount;
-
-    userData.transactions.push({
-        amount,
-        category,
-        date: new Date().toLocaleDateString()
-    });
-
-    // Overspending logic
-    if (userData.todaySpent > userData.dailyLimit) {
-        const extra = userData.todaySpent - userData.dailyLimit;
-        userData.dailyLimit -= extra;
-    }
-
-    saveData();
-    updateUI();
+    if(p>=75){statusMessage.innerText="🟢 Good";statusMessage.classList.add("green");}
+    else if(p>=45){statusMessage.innerText="🟡 Careful";statusMessage.classList.add("yellow");}
+    else{statusMessage.innerText="🔴 Low balance";statusMessage.classList.add("red");}
 }
 
-// ==========================
-// OTHER EXPENSE BUTTON
-// ==========================
-addExpenseBtn.addEventListener("click", () => {
-    const amount = parseFloat(expenseAmountInput.value);
-    addExpense(amount, "Other");
-    expenseAmountInput.value = "";
-});
-
-// ==========================
-// STATUS SYSTEM
-// ==========================
-function updateStatus(remaining) {
-    const percent = (remaining / userData.dailyLimit) * 100;
-
-    statusMessage.className = "";
-
-    if (percent >= 75) {
-        statusMessage.innerText = "🟢 You are doing great!";
-        statusMessage.classList.add("green");
-    } else if (percent >= 45) {
-        statusMessage.innerText = "🟡 Be mindful of spending";
-        statusMessage.classList.add("yellow");
-    } else {
-        statusMessage.innerText = "🔴 Low balance! Control spending";
-        statusMessage.classList.add("red");
-    }
-}
-
-// ==========================
 // HISTORY
-// ==========================
-function updateHistory() {
-    historyList.innerHTML = "";
-
-    userData.transactions.slice().reverse().forEach(tx => {
-        const li = document.createElement("li");
-        li.textContent = `${tx.date} - ₹${tx.amount} (${tx.category})`;
+function updateHistory(){
+    historyList.innerHTML="";
+    data.transactions.slice().reverse().forEach(t=>{
+        const li=document.createElement("li");
+        li.innerText=`${t.date} ₹${t.amount} (${t.cat})`;
         historyList.appendChild(li);
     });
 }
 
-// ==========================
 // CHART
-// ==========================
 let chart;
-
-function updateChart() {
-    const categoryTotals = {};
-
-    userData.transactions.forEach(tx => {
-        categoryTotals[tx.category] =
-            (categoryTotals[tx.category] || 0) + tx.amount;
+function updateChart(){
+    const map={};
+    data.transactions.forEach(t=>{
+        map[t.cat]=(map[t.cat]||0)+t.amount;
     });
 
-    const labels = Object.keys(categoryTotals);
-    const data = Object.values(categoryTotals);
+    if(chart) chart.destroy();
 
-    const ctx = document.getElementById("expenseChart");
-
-    if (chart) chart.destroy();
-
-    chart = new Chart(ctx, {
-        type: "pie",
-        data: {
-            labels: labels,
-            datasets: [{
-                data: data,
-                backgroundColor: [
-                    "#ff6384",
-                    "#36a2eb",
-                    "#ffce56",
-                    "#4bc0c0",
-                    "#9966ff"
-                ]
-            }]
+    chart=new Chart(expenseChart,{
+        type:"pie",
+        data:{
+            labels:Object.keys(map),
+            datasets:[{data:Object.values(map)}]
         }
     });
 }
 
-// ==========================
 // LOGOUT
-// ==========================
-logoutBtn.addEventListener("click", () => {
+logoutBtn.onclick=()=>{
     localStorage.removeItem("loggedInUser");
-    window.location.href = "index.html";
-});
+    location.href="index.html";
+};
+
+// INIT
+if(data.monthly) show();

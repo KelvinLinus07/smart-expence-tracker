@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Smart Expense Tracker</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
@@ -16,22 +16,31 @@
         <button id="logoutBtn" class="logout-small">Logout</button>
     </header>
 
-    <!-- ===================== -->
-    <!-- SETUP SECTION -->
-    <!-- ===================== -->
+    <!-- SETUP -->
     <div id="setupSection" class="card">
-        <h2>Setup Your Budget</h2>
 
-        <input type="number" id="monthlyBudget" placeholder="Monthly Budget (₹)">
-        <input type="number" id="savingsGoal" placeholder="Savings Goal (₹)">
+        <h2>Setup Budget</h2>
+
+        <input type="number" id="monthlyBudget" placeholder="Monthly Budget ₹">
+        <input type="number" id="savingsGoal" placeholder="Savings ₹">
+
+        <!-- PERMANENT EXPENSE -->
+        <h3>Permanent Expenses</h3>
+        <div id="fixedContainer">
+            <div class="row">
+                <input type="text" class="fixedName" placeholder="e.g Rent">
+                <input type="number" class="fixedAmount" placeholder="Amount ₹">
+            </div>
+        </div>
+
+        <button id="addFixed">+ Add More</button>
 
         <!-- DAILY HABITS -->
-        <h3>Daily Spending Habits</h3>
-
+        <h3>Daily Expenses (Quick Add)</h3>
         <div id="habitContainer">
-            <div class="habit-row">
-                <input type="text" class="habitName" placeholder="e.g. Tea">
-                <input type="number" class="habitAmount" placeholder="Amount ₹">
+            <div class="row">
+                <input type="text" class="habitName" placeholder="Tea">
+                <input type="number" class="habitAmount" placeholder="₹">
             </div>
         </div>
 
@@ -39,61 +48,41 @@
         <button id="saveSetup">Save Setup</button>
     </div>
 
-    <!-- ===================== -->
-    <!-- DASHBOARD SECTION -->
-    <!-- ===================== -->
+    <!-- DASHBOARD -->
     <div id="dashboardSection" style="display:none;">
 
         <!-- SUMMARY -->
         <div class="summary">
-            <div class="card">
-                <h3>Monthly Budget</h3>
-                <p id="budgetDisplay">₹0</p>
-            </div>
-
-            <div class="card">
-                <h3>Savings Goal</h3>
-                <p id="savingsDisplay">₹0</p>
-            </div>
-
-            <div class="card">
-                <h3>Daily Limit</h3>
-                <p id="dailyLimitDisplay">₹0</p>
-            </div>
-
-            <div class="card">
-                <h3>Remaining Today</h3>
-                <p id="remainingDisplay">₹0</p>
-            </div>
+            <div class="card"><h3>Budget</h3><p id="budgetDisplay"></p></div>
+            <div class="card"><h3>Fixed Expense</h3><p id="fixedDisplay"></p></div>
+            <div class="card"><h3>Daily Limit</h3><p id="dailyLimitDisplay"></p></div>
+            <div class="card"><h3>Remaining</h3><p id="remainingDisplay"></p></div>
         </div>
 
-        <!-- QUICK EXPENSE -->
+        <!-- QUICK -->
         <div class="card">
-            <h2>Quick Add (Daily Habits)</h2>
-
-            <!-- AUTO GENERATED BUTTONS -->
+            <h2>Quick Add</h2>
             <div id="quickButtons"></div>
 
-            <!-- OTHER EXPENSE -->
-            <input type="number" id="expenseAmount" placeholder="Other Amount (₹)">
-            <button id="addExpense">Add Other Expense</button>
+            <input type="number" id="expenseAmount" placeholder="Other ₹">
+            <button id="addExpense">Add Other</button>
         </div>
 
         <!-- STATUS -->
         <div class="card">
             <h2>Status</h2>
-            <p id="statusMessage">No data yet</p>
+            <p id="statusMessage"></p>
         </div>
 
         <!-- CHART -->
         <div class="card">
-            <h2>Spending Overview</h2>
+            <h2>Chart</h2>
             <canvas id="expenseChart"></canvas>
         </div>
 
         <!-- HISTORY -->
         <div class="card">
-            <h2>Transaction History</h2>
+            <h2>History</h2>
             <ul id="historyList"></ul>
         </div>
 
@@ -101,10 +90,7 @@
 
 </div>
 
-<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<!-- MAIN JS -->
 <script src="dashboard.js"></script>
 
 </body>

@@ -1,201 +1,76 @@
-/* RESET */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
-}
-
-/* BODY */
 body {
     background: #f4f7fb;
-    padding: 20px;
+    font-family: sans-serif;
 }
 
-/* CONTAINER */
 .dashboard-container {
     max-width: 1100px;
     margin: auto;
+    padding: 20px;
 }
 
-/* HEADER */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
 }
 
-header h1 {
-    font-size: 1.8rem;
-    color: #333;
-}
-
-/* SMALL LOGOUT BUTTON */
 .logout-small {
     padding: 6px 12px;
-    font-size: 0.8rem;
-    background: #ff4d4d;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 6px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+.summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.row {
+    display: flex;
+    gap: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+button {
+    padding: 10px;
+    margin-top: 10px;
+    background: #0072ff;
     color: white;
     border: none;
     border-radius: 6px;
     cursor: pointer;
 }
 
-.logout-small:hover {
-    opacity: 0.8;
-}
-
-/* CARD */
-.card {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-}
-
-/* SUMMARY GRID */
-.summary {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-}
-
-.card h3 {
-    color: #666;
-    margin-bottom: 10px;
-}
-
-.card p {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #222;
-}
-
-/* INPUTS */
-input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    outline: none;
-}
-
-input:focus {
-    border-color: #0072ff;
-    box-shadow: 0 0 5px rgba(0,114,255,0.4);
-}
-
-/* BUTTONS */
-button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    background: linear-gradient(135deg, #0072ff, #00c6ff);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-button:hover {
-    transform: scale(1.03);
-    opacity: 0.9;
-}
-
-/* HABIT ROW */
-.habit-row {
-    display: flex;
-    gap: 10px;
-}
-
-.habitName, .habitAmount {
-    width: 50%;
-}
-
-/* ADD HABIT BUTTON */
-#addHabit {
-    background: #28a745;
-}
-
-/* QUICK BUTTONS */
 #quickButtons {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 10px;
 }
 
 .quick-btn {
-    padding: 8px 14px;
-    background: linear-gradient(135deg, #36a2eb, #0072ff);
+    padding: 8px 12px;
+    background: #0072ff;
     color: white;
     border-radius: 20px;
     cursor: pointer;
-    font-size: 0.85rem;
-    transition: 0.3s;
 }
 
-.quick-btn:hover {
-    transform: scale(1.05);
-    opacity: 0.9;
-}
-
-/* STATUS */
-#statusMessage {
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-/* STATUS COLORS */
-.green {
-    color: #28a745;
-}
-
-.yellow {
-    color: #ffc107;
-}
-
-.red {
-    color: #dc3545;
-}
-
-/* HISTORY LIST */
-#historyList {
-    list-style: none;
-    margin-top: 10px;
-}
-
-#historyList li {
-    padding: 8px;
-    border-bottom: 1px solid #eee;
-    font-size: 0.9rem;
-}
-
-/* CHART */
-canvas {
-    max-width: 400px;
-    margin: auto;
-    display: block;
-}
-
-/* RESPONSIVE */
-@media (max-width: 900px) {
-    .summary {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 500px) {
-    .summary {
-        grid-template-columns: 1fr;
-    }
-
-    .habit-row {
-        flex-direction: column;
-    }
-}
+.green { color: green; }
+.yellow { color: orange; }
+.red { color: red; }
