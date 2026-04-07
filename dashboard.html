@@ -14,11 +14,13 @@
     <header>
         <h1>💸 Smart Expense Tracker</h1>
         <a href="index.html" onclick="logoutUser()" class="logout-small">
-    Logout
-</a>
+            Logout
+        </a>
     </header>
 
-    <!-- SETUP -->
+    <!-- ===================== -->
+    <!-- SETUP SECTION -->
+    <!-- ===================== -->
     <div id="setupSection" class="card">
 
         <h2>Setup Budget</h2>
@@ -26,7 +28,7 @@
         <input type="number" id="monthlyBudget" placeholder="Monthly Budget ₹">
         <input type="number" id="savingsGoal" placeholder="Savings ₹">
 
-        <!-- PERMANENT EXPENSE -->
+        <!-- FIXED EXPENSE -->
         <h3>Permanent Expenses</h3>
         <div id="fixedContainer">
             <div class="row">
@@ -37,7 +39,7 @@
 
         <button id="addFixed">+ Add More</button>
 
-        <!-- DAILY HABITS -->
+        <!-- QUICK HABITS -->
         <h3>Daily Expenses (Quick Add)</h3>
         <div id="habitContainer">
             <div class="row">
@@ -50,18 +52,35 @@
         <button id="saveSetup">Save Setup</button>
     </div>
 
-    <!-- DASHBOARD -->
+    <!-- ===================== -->
+    <!-- DASHBOARD SECTION -->
+    <!-- ===================== -->
     <div id="dashboardSection" style="display:none;">
 
         <!-- SUMMARY -->
         <div class="summary">
-            <div class="card"><h3>Budget</h3><p id="budgetDisplay"></p></div>
-            <div class="card"><h3>Fixed Expense</h3><p id="fixedDisplay"></p></div>
-            <div class="card"><h3>Daily Limit</h3><p id="dailyLimitDisplay"></p></div>
-            <div class="card"><h3>Remaining</h3><p id="remainingDisplay"></p></div>
+            <div class="card">
+                <h3>Budget</h3>
+                <p id="budgetDisplay"></p>
+            </div>
+
+            <div class="card">
+                <h3>Fixed Expense</h3>
+                <p id="fixedDisplay"></p>
+            </div>
+
+            <div class="card">
+                <h3>Daily Limit</h3>
+                <p id="dailyLimitDisplay"></p>
+            </div>
+
+            <div class="card">
+                <h3>Remaining</h3>
+                <p id="remainingDisplay"></p>
+            </div>
         </div>
 
-        <!-- QUICK -->
+        <!-- QUICK ADD -->
         <div class="card">
             <h2>Quick Add</h2>
             <div id="quickButtons"></div>
@@ -92,11 +111,17 @@
 
 </div>
 
+<!-- CHART -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- MAIN JS -->
 <script src="dashboard.js"></script>
+
+<!-- LOGOUT -->
 <script>
 function logoutUser() {
     localStorage.removeItem("loggedInUser");
+    sessionStorage.setItem("justLoggedOut", "true");
 }
 </script>
 

@@ -1,5 +1,5 @@
 // ==========================
-// AUTO REDIRECT FIXED
+// AUTO REDIRECT
 // ==========================
 const currentUser = localStorage.getItem("loggedInUser");
 
@@ -7,8 +7,8 @@ if (currentUser && !sessionStorage.getItem("justLoggedOut")) {
     window.location.href = "dashboard.html";
 }
 
+// clear logout flag after use
 sessionStorage.removeItem("justLoggedOut");
-
 
 // ==========================
 // ELEMENTS
@@ -18,7 +18,6 @@ const signupForm = document.getElementById("signupForm");
 
 const showSignup = document.getElementById("showSignup");
 const showLogin = document.getElementById("showLogin");
-
 
 // ==========================
 // TOGGLE
@@ -33,7 +32,6 @@ showLogin.onclick = () => {
     loginForm.style.display = "block";
 };
 
-
 // ==========================
 // SIGNUP
 // ==========================
@@ -43,21 +41,41 @@ signupForm.addEventListener("submit", (e) => {
     const username = signupUsername.value.trim();
     const password = signupPassword.value.trim();
 
-    if (!username || !password) return alert("Fill all fields");
-
-    if (localStorage.getItem(username)) {
-        return alert("User already exists");
+    if (!username || !password) {
+        alert("Fill all fields");
+        return;
     }
 
-    localStorage.setItem(username, JSON.stringify({ username, password }));
+    // NEW USER STORAGE KEY
+    const userKey = `expenseUser_${username}`;
+    const existingUser = JSON.parse(localStorage.getItem(userKey));
 
-    alert("Account created!");
+    if (existingUser) {
+        alert("User already exists");
+        return;
+    }
+
+    // CREATE FULL USER OBJECT
+    const newUser = {
+        username,
+        password,
+        monthly: null,
+        savings: null,
+        fixedTotal: 0,
+        dailyLimit: 0,
+        today: 0,
+        habits: [],
+        transactions: []
+    };
+
+    localStorage.setItem(userKey, JSON.stringify(newUser));
+
+    alert("Account created successfully!");
 
     signupForm.reset();
     signupForm.style.display = "none";
     loginForm.style.display = "block";
 });
-
 
 // ==========================
 // LOGIN
@@ -68,15 +86,23 @@ loginForm.addEventListener("submit", (e) => {
     const username = loginUsername.value.trim();
     const password = loginPassword.value.trim();
 
-    const user = JSON.parse(localStorage.getItem(username));
+    // MATCH SAME KEY
+    const userKey = `expenseUser_${username}`;
+    const user = JSON.parse(localStorage.getItem(userKey));
 
-    if (!user) return alert("User not found");
-
-    if (user.password === password) {
-        localStorage.setItem("loggedInUser", username);
-        sessionStorage.removeItem("justLoggedOut");
-        window.location.href = "dashboard.html";
-    } else {
-        alert("Wrong password");
+    if (!user) {
+        alert("User not found");
+        return;
     }
+
+    if (user.password !== password) {
+        alert("Wrong password");
+        return;
+    }
+
+    // SAVE ACTIVE USER
+    localStorage.setItem("loggedInUser", username);
+
+    sessionStorage.removeItem("justLoggedOut");
+    window.location.href = "dashboard.html";
 });

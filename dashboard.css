@@ -21,8 +21,10 @@ header {
     color: white;
     border: none;
     border-radius: 6px;
+    text-decoration: none;
 }
 
+/* CARD */
 .card {
     background: white;
     padding: 20px;
@@ -30,23 +32,27 @@ header {
     border-radius: 10px;
 }
 
+/* SUMMARY */
 .summary {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
 }
 
+/* ROWS */
 .row {
     display: flex;
     gap: 10px;
 }
 
+/* INPUT */
 input {
     width: 100%;
     padding: 10px;
     margin: 5px 0;
 }
 
+/* BUTTON */
 button {
     padding: 10px;
     margin-top: 10px;
@@ -57,6 +63,7 @@ button {
     cursor: pointer;
 }
 
+/* QUICK BUTTONS */
 #quickButtons {
     display: flex;
     flex-wrap: wrap;
@@ -71,6 +78,15 @@ button {
     cursor: pointer;
 }
 
-.green { color: green; }
-.yellow { color: orange; }
-.red { color: red; }
+/* STATUS COLORS */
+.green {
+    color: green;
+}
+
+.yellow {
+    color: orange;
+}
+
+.red {
+    color: red;
+}
