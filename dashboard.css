@@ -90,3 +90,51 @@ button {
 .red {
     color: red;
 }
+
+/* AI CHAT */
+.ai-chat {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ai-message {
+    background: #e6f0ff;
+    padding: 10px 14px;
+    border-radius: 12px;
+    max-width: 80%;
+}
+
+/* ==========================
+   HISTORY DATE CHIPS
+========================== */
+.history-dates {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0 15px;
+}
+
+.date-chip {
+    padding: 8px 14px;
+    background: #eef4ff;
+    color: #0072ff;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.2s ease;
+    user-select: none;
+}
+
+.date-chip:hover {
+    background: #0072ff;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.date-chip.active {
+    background: #0072ff;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 114, 255, 0.25);
+}

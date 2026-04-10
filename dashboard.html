@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
-
 <div class="dashboard-container">
 
     <!-- HEADER -->
@@ -22,7 +21,6 @@
     <!-- SETUP SECTION -->
     <!-- ===================== -->
     <div id="setupSection" class="card">
-
         <h2>Setup Budget</h2>
 
         <input type="number" id="monthlyBudget" placeholder="Monthly Budget ₹">
@@ -95,24 +93,25 @@
             <p id="statusMessage"></p>
         </div>
 
-        <!-- CHART -->
+        <!-- AI SUGGESTION BOX -->
         <div class="card">
-            <h2>Chart</h2>
-            <canvas id="expenseChart"></canvas>
+            <h2>Smart Suggestions 🤖</h2>
+            <div id="aiSuggestions" class="ai-chat"></div>
         </div>
 
         <!-- HISTORY -->
         <div class="card">
-            <h2>History</h2>
+            <h2>History 📅</h2>
+
+            <!-- CLICKABLE DATE FILTERS -->
+            <div id="historyDates" class="history-dates"></div>
+
+            <!-- HISTORY LIST -->
             <ul id="historyList"></ul>
         </div>
 
     </div>
-
 </div>
-
-<!-- CHART -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- MAIN JS -->
 <script src="dashboard.js"></script>

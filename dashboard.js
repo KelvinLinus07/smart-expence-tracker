@@ -4,7 +4,6 @@
 const user = localStorage.getItem("loggedInUser");
 if (!user) location.href = "index.html";
 
-// NEW USER STORAGE KEY
 const userKey = `expenseUser_${user}`;
 
 // LOAD USER DATA
@@ -39,7 +38,12 @@ const remainingDisplay = document.getElementById("remainingDisplay");
 
 const quickButtons = document.getElementById("quickButtons");
 const historyList = document.getElementById("historyList");
+const historyDates = document.getElementById("historyDates");
+
 const statusMessage = document.getElementById("statusMessage");
+const aiSuggestions = document.getElementById("aiSuggestions");
+
+let selectedHistoryDate = "ALL";
 
 // ==========================
 // ADD FIXED
@@ -100,7 +104,6 @@ document.getElementById("saveSetup").onclick = () => {
     data.dailyLimit =
         (data.monthly - (data.fixedTotal + data.savings)) / 30;
 
-    // only reset today for first setup
     if (!data.today) data.today = 0;
 
     save();
@@ -135,7 +138,6 @@ function createButtons() {
         const btn = document.createElement("div");
         btn.className = "quick-btn";
         btn.innerText = `${h.name} ₹${h.amount}`;
-
         btn.onclick = () => addExpense(h.amount, h.name);
 
         quickButtons.appendChild(btn);
@@ -148,12 +150,14 @@ function createButtons() {
 function addExpense(amount, cat = "Other") {
     if (!amount || amount <= 0) return;
 
+    const today = new Date().toISOString().split("T")[0];
+
     data.today += amount;
 
     data.transactions.push({
         amount,
         cat,
-        date: new Date().toLocaleDateString()
+        date: today
     });
 
     save();
@@ -169,6 +173,51 @@ addExpenseBtn.onclick = () => {
 };
 
 // ==========================
+// HISTORY DATE CHIPS
+// ==========================
+function renderHistoryDateChips() {
+    historyDates.innerHTML = "";
+
+    const uniqueDates = [...new Set(data.transactions.map(t => t.date))]
+        .sort()
+        .reverse();
+
+    // ALL CHIP
+    const allChip = document.createElement("div");
+    allChip.className = "date-chip";
+    if (selectedHistoryDate === "ALL") {
+        allChip.classList.add("active");
+    }
+    allChip.innerText = "All";
+    allChip.onclick = () => {
+        selectedHistoryDate = "ALL";
+        renderHistoryDateChips();
+        updateHistory();
+    };
+    historyDates.appendChild(allChip);
+
+    // DATE CHIPS
+    uniqueDates.forEach(date => {
+        const chip = document.createElement("div");
+        chip.className = "date-chip";
+
+        if (selectedHistoryDate === date) {
+            chip.classList.add("active");
+        }
+
+        chip.innerText = date;
+
+        chip.onclick = () => {
+            selectedHistoryDate = date;
+            renderHistoryDateChips();
+            updateHistory();
+        };
+
+        historyDates.appendChild(chip);
+    });
+}
+
+// ==========================
 // UPDATE UI
 // ==========================
 function updateUI() {
@@ -180,8 +229,9 @@ function updateUI() {
     remainingDisplay.innerText = "₹" + remaining.toFixed(2);
 
     updateStatus(remaining);
+    renderHistoryDateChips();
     updateHistory();
-    updateChart();
+    generateAISuggestions();
 }
 
 // ==========================
@@ -204,12 +254,25 @@ function updateStatus(rem) {
 }
 
 // ==========================
-// HISTORY
+// FILTERED HISTORY
 // ==========================
 function updateHistory() {
     historyList.innerHTML = "";
 
-    data.transactions.slice().reverse().forEach(t => {
+    let filtered = data.transactions.slice().reverse();
+
+    if (selectedHistoryDate !== "ALL") {
+        filtered = filtered.filter(t => t.date === selectedHistoryDate);
+    }
+
+    if (filtered.length === 0) {
+        const li = document.createElement("li");
+        li.innerText = "No transactions found";
+        historyList.appendChild(li);
+        return;
+    }
+
+    filtered.forEach(t => {
         const li = document.createElement("li");
         li.innerText = `${t.date} ₹${t.amount} (${t.cat})`;
         historyList.appendChild(li);
@@ -217,28 +280,40 @@ function updateHistory() {
 }
 
 // ==========================
-// CHART
+// AI CHAT
 // ==========================
-let chart;
+function addMessage(text) {
+    const div = document.createElement("div");
+    div.className = "ai-message";
+    div.innerText = text;
+    aiSuggestions.appendChild(div);
+}
 
-function updateChart() {
-    const map = {};
+// ==========================
+// AI ENGINE
+// ==========================
+function generateAISuggestions() {
+    aiSuggestions.innerHTML = "";
 
-    data.transactions.forEach(t => {
-        map[t.cat] = (map[t.cat] || 0) + t.amount;
-    });
+    if (!data.transactions || data.transactions.length === 0) {
+        addMessage("Start adding expenses to get smart insights.");
+        return;
+    }
 
-    if (chart) chart.destroy();
+    const totalToday = data.today;
+    const remaining = data.dailyLimit - totalToday;
 
-    chart = new Chart(expenseChart, {
-        type: "pie",
-        data: {
-            labels: Object.keys(map),
-            datasets: [{
-                data: Object.values(map)
-            }]
-        }
-    });
+    const safe = Math.max(0, Math.round(remaining * 0.5));
+
+    if (remaining < 0) {
+        addMessage("😬 You crossed your daily budget.");
+    } else if (totalToday > data.dailyLimit * 0.8) {
+        addMessage("⚠️ You're getting close to your limit.");
+    } else {
+        addMessage("👏 Nice! You're managing your spending well today.");
+    }
+
+    addMessage(`📅 Safe extra spend today: ₹${safe}`);
 }
 
 // ==========================
