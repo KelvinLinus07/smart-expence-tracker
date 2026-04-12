@@ -7,38 +7,41 @@
     <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
+
 <div class="dashboard-container">
 
     <!-- HEADER -->
     <header>
         <h1>💸 Smart Expense Tracker</h1>
-        <a href="index.html" onclick="logoutUser()" class="logout-small">
-            Logout
-        </a>
+        <div class="header-right">
+            <a href="rewards.html" class="nav-btn">🏆 Rewards</a>
+            <a href="index.html" onclick="logoutUser()" class="logout-small">Logout</a>
+        </div>
     </header>
 
     <!-- ===================== -->
     <!-- SETUP SECTION -->
     <!-- ===================== -->
     <div id="setupSection" class="card">
-        <h2>Setup Budget</h2>
+
+        <h2>⚙️ Setup Budget</h2>
 
         <input type="number" id="monthlyBudget" placeholder="Monthly Budget ₹">
-        <input type="number" id="savingsGoal" placeholder="Savings ₹">
+        <input type="number" id="savingsGoal" placeholder="Savings Goal ₹">
 
-        <!-- FIXED EXPENSE -->
-        <h3>Permanent Expenses</h3>
+        <!-- FIXED -->
+        <h3>🏠 Fixed Expenses</h3>
         <div id="fixedContainer">
             <div class="row">
-                <input type="text" class="fixedName" placeholder="e.g Rent">
-                <input type="number" class="fixedAmount" placeholder="Amount ₹">
+                <input type="text" class="fixedName" placeholder="Rent">
+                <input type="number" class="fixedAmount" placeholder="₹">
             </div>
         </div>
 
         <button id="addFixed">+ Add More</button>
 
-        <!-- QUICK HABITS -->
-        <h3>Daily Expenses (Quick Add)</h3>
+        <!-- HABITS -->
+        <h3>⚡ Daily Habits</h3>
         <div id="habitContainer">
             <div class="row">
                 <input type="text" class="habitName" placeholder="Tea">
@@ -47,73 +50,76 @@
         </div>
 
         <button id="addHabit">+ Add More</button>
+
         <button id="saveSetup">Save Setup</button>
     </div>
 
     <!-- ===================== -->
-    <!-- DASHBOARD SECTION -->
+    <!-- DASHBOARD -->
     <!-- ===================== -->
     <div id="dashboardSection" style="display:none;">
 
         <!-- SUMMARY -->
         <div class="summary">
             <div class="card">
-                <h3>Budget</h3>
+                <h3>💰 Budget</h3>
                 <p id="budgetDisplay"></p>
             </div>
 
             <div class="card">
-                <h3>Fixed Expense</h3>
+                <h3>🏠 Fixed</h3>
                 <p id="fixedDisplay"></p>
             </div>
 
             <div class="card">
-                <h3>Daily Limit</h3>
+                <h3>📅 Daily Limit</h3>
                 <p id="dailyLimitDisplay"></p>
             </div>
 
             <div class="card">
-                <h3>Remaining</h3>
+                <h3>⚠️ Remaining</h3>
                 <p id="remainingDisplay"></p>
             </div>
         </div>
 
         <!-- QUICK ADD -->
         <div class="card">
-            <h2>Quick Add</h2>
+            <h2>⚡ Quick Add</h2>
+
             <div id="quickButtons"></div>
 
-            <input type="number" id="expenseAmount" placeholder="Other ₹">
-            <button id="addExpense">Add Other</button>
+            <input type="number" id="expenseAmount" placeholder="Other Expense ₹">
+            <button id="addExpense">Add Expense</button>
         </div>
 
         <!-- STATUS -->
         <div class="card">
-            <h2>Status</h2>
+            <h2>📊 Status</h2>
             <p id="statusMessage"></p>
         </div>
 
-        <!-- AI SUGGESTION BOX -->
+        <!-- AI -->
         <div class="card">
-            <h2>Smart Suggestions 🤖</h2>
+            <h2>🤖 Smart Suggestions</h2>
             <div id="aiSuggestions" class="ai-chat"></div>
         </div>
 
-        <!-- HISTORY -->
+        <!-- HISTORY FILTER -->
         <div class="card">
-            <h2>History 📅</h2>
+            <h2>📅 History</h2>
 
-            <!-- CLICKABLE DATE FILTERS -->
-            <div id="historyDates" class="history-dates"></div>
+            <!-- DATE FILTER CHIPS -->
+            <div id="historyDates" class="date-chips"></div>
 
-            <!-- HISTORY LIST -->
+            <!-- LIST -->
             <ul id="historyList"></ul>
         </div>
 
     </div>
+
 </div>
 
-<!-- MAIN JS -->
+<!-- JS -->
 <script src="dashboard.js"></script>
 
 <!-- LOGOUT -->

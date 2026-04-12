@@ -6,11 +6,23 @@
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* MAIN */
-body {
-    height: 100vh;
+/* ROOT THEME */
+:root {
+    --primary: #0072ff;
+    --secondary: #00c6ff;
+    --bg: #0f172a;
+    --card: rgba(255,255,255,0.05);
+    --text: #e2e8f0;
 }
 
+/* BODY */
+body {
+    height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* MAIN */
 .main-container {
     display: flex;
     height: 100vh;
@@ -19,7 +31,7 @@ body {
 /* LEFT SIDE */
 .left-section {
     flex: 1;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    background: linear-gradient(135deg, #0f172a, #1e293b);
     color: white;
     padding: 60px;
     display: flex;
@@ -29,42 +41,39 @@ body {
 
 .left-section h1 {
     font-size: 3rem;
-    margin-bottom: 10px;
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    -webkit-background-clip: text;
+    background-clip: text; /* ✅ ADD THIS */
+    color: transparent;
 }
 
 .tagline {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-    opacity: 0.9;
+    margin-top: 10px;
+    opacity: 0.8;
 }
 
+/* FEATURES */
 .features p {
     margin: 10px 0;
-    font-size: 1rem;
+    opacity: 0.9;
 }
 
 /* RIGHT SIDE */
 .right-section {
     flex: 1;
-    background: #f4f7fb;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* FORM BOX */
+/* FORM */
 .form-box {
-    width: 320px;
-    background: white;
+    width: 350px;
+    background: var(--card);
+    backdrop-filter: blur(12px);
     padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-
-/* HEADINGS */
-form h2 {
-    text-align: center;
-    margin-bottom: 20px;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
 /* INPUT */
@@ -72,24 +81,28 @@ input {
     width: 100%;
     padding: 12px;
     margin: 10px 0;
-    border-radius: 8px;
-    border: 1px solid #ddd;
+    border-radius: 10px;
+    border: none;
+    background: rgba(255,255,255,0.08);
+    color: white;
 }
 
 /* BUTTON */
 button {
     width: 100%;
     padding: 12px;
-    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     color: white;
     font-weight: bold;
     cursor: pointer;
+    transition: 0.3s;
 }
 
 button:hover {
-    opacity: 0.9;
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(0,114,255,0.4);
 }
 
 /* SWITCH */
@@ -99,19 +112,13 @@ button:hover {
 }
 
 .switch-text span {
-    color: #0072ff;
+    color: #00c6ff;
     cursor: pointer;
-    font-weight: bold;
 }
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
     .main-container {
         flex-direction: column;
-    }
-
-    .left-section {
-        text-align: center;
-        padding: 30px;
     }
 }

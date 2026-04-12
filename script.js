@@ -101,7 +101,37 @@ loginForm.addEventListener("submit", (e) => {
     }
 
     // SAVE ACTIVE USER
-    localStorage.setItem("loggedInUser", username);
+   localStorage.setItem("loggedInUser", username);
+
+// ==========================
+// DAILY CHECK-IN SYSTEM
+// ==========================
+let userData = JSON.parse(localStorage.getItem(userKey));
+
+const today = new Date().toISOString().split("T")[0];
+
+if (!userData.lastLoginDate) {
+    userData.lastLoginDate = today;
+    userData.streak = 1;
+} else {
+    const last = new Date(userData.lastLoginDate);
+    const curr = new Date(today);
+
+    const diff = (curr - last) / (1000 * 60 * 60 * 24);
+
+    if (diff === 1) {
+        userData.streak += 1; // continue streak
+    } else if (diff > 1) {
+        userData.streak = 1; // reset streak
+    }
+
+    userData.lastLoginDate = today;
+}
+
+// INIT BADGES
+if (!userData.badges) userData.badges = [];
+
+localStorage.setItem(userKey, JSON.stringify(userData));
 
     sessionStorage.removeItem("justLoggedOut");
     window.location.href = "dashboard.html";
